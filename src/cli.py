@@ -44,7 +44,7 @@ Examples:
         return
     
     if args.command == 'test-auth':
-        """Test authentication and display connection info"""
+        # Test authentication and display connection info
         from .auth import test_connection
         print("\n🔐 Testing authentication...")
         service = get_service()
