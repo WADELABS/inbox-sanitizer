@@ -15,6 +15,7 @@ def main():
         epilog="""
 Examples:
   inbox-sanitizer auth                    # Connect to Gmail
+  inbox-sanitizer test-auth               # Test connection and show account info
   inbox-sanitizer check                    # See what would be archived
   inbox-sanitizer clean                     # Actually archive messages
   inbox-sanitizer clean --max 200           # Process up to 200 messages
@@ -23,7 +24,7 @@ Examples:
         """
     )
     
-    parser.add_argument('command', choices=['auth', 'check', 'clean', 'daemon'],
+    parser.add_argument('command', choices=['auth', 'test-auth', 'check', 'clean', 'daemon'],
                        help='What to do')
     parser.add_argument('--max', type=int, default=100,
                        help='Maximum messages to process')
@@ -40,6 +41,26 @@ Examples:
         if service:
             print("Authentication successful!")
             print("You can now use other commands.")
+        return
+    
+    if args.command == 'test-auth':
+        """Test authentication and display connection info"""
+        from .auth import test_connection
+        print("\n🔐 Testing authentication...")
+        service = get_service()
+        if service:
+            result = test_connection(service)
+            if result['status'] == 'connected':
+                print(f"✓ Successfully connected to Gmail")
+                print(f"  Email: {result['email']}")
+                print(f"  Total messages: {result['messages_total']}")
+            else:
+                print(f"✗ Connection test failed")
+                print(f"  Error: {result['error']}")
+                sys.exit(1)
+        else:
+            print("✗ Authentication failed. Run 'inbox-sanitizer auth' first.")
+            sys.exit(1)
         return
     
     # For other commands, we need authenticated service
