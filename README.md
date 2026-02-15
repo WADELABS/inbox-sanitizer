@@ -131,9 +131,64 @@ max_age_days: 30
 | Command | Description |
 |---------|-------------|
 | `auth` | Connect to Gmail (run once) |
+| `test-auth` | Test connection and show account info |
 | `check` | Preview what would be archived |
 | `clean` | Actually archive messages |
 | `daemon` | Run continuously |
+
+## Authentication
+
+### First-Time Setup
+
+1. **Get Gmail API Credentials:**
+   ```bash
+   # 1. Go to https://console.cloud.google.com/
+   # 2. Create a new project or select existing
+   # 3. Enable Gmail API
+   # 4. Create OAuth 2.0 Client ID credentials
+   # 5. Download credentials.json to project root
+   ```
+
+2. **Authenticate:**
+   ```bash
+   inbox-sanitizer auth
+   ```
+   This will open a browser for OAuth consent. After approval, credentials are saved to `token.pickle`.
+
+3. **Test Connection:**
+   ```bash
+   inbox-sanitizer test-auth
+   ```
+   Output:
+   ```
+   ✓ Successfully connected to Gmail
+     Email: your-email@gmail.com
+     Total messages: 1234
+   ```
+
+### Token Management
+
+- **Tokens are automatically refreshed** when expired
+- **Token stored in:** `token.pickle` (don't commit this!)
+- **Logout/Switch accounts:**
+  ```python
+  from src.auth import revoke_credentials
+  revoke_credentials()
+  ```
+
+### Troubleshooting
+
+**"Missing credentials.json" error:**
+- Download OAuth2 credentials from Google Cloud Console
+- Save as `credentials.json` in project root
+
+**Token refresh failures:**
+- Run `inbox-sanitizer auth` to re-authenticate
+- Check internet connection and API quota
+
+**Permission errors:**
+- Ensure Gmail API scope includes `gmail.modify`
+- Re-authenticate if scope changed
 
 ## Requirements
 
