@@ -4,3 +4,4 @@ google-auth-oauthlib>=0.4.0
 schedule>=1.0.0
 pyyaml>=5.4.0
 pytest>=6.0.0
+pytest-mock>=3.10.0
