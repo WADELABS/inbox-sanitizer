@@ -1,0 +1,30 @@
+# Domains that are always kept (newsletters you actually want)
+whitelist:
+  - "@yourcompany.com"
+  - "@important-newsletter.com"
+
+# Domains that are always archived (spammy senders)
+blacklist:
+  - "@mailgun.org"
+  - "@sendgrid.net"
+  - "marketing@"
+  - "newsletter@"
+
+# Words that indicate a message is a newsletter
+newsletter_patterns:
+  - "unsubscribe"
+  - "newsletter"
+  - "weekly digest"
+  - "daily briefing"
+  - "no-reply"
+  - "noreply"
+  - "mailer-daemon"
+  - "marketing email"
+  - "promo"
+  - "sale"
+
+# Archive messages older than this many days
+max_age_days: 30
+
+# What to do with matched messages (archive or delete)
+action: "archive"
